@@ -68,6 +68,15 @@ function tessshape(character,two,x,y) {
     grouping = two.makeGroup(rect1,rect2,rect3);
     two.update();
   }
+  else if (character == "T") {
+    rect1 = two.makeRectangle(x,y,50,10);
+    rect1.fill = 'rgb(10, 10, 10)';
+    rect2 = two.makeRectangle(x,y+30,10,50);
+    rect2.fill = 'rgb(10, 10, 10)';
+    grouping = two.makeGroup(rect1,rect2);
+    two.update();
+  }
+  return
 }
 
 var curX = 150;
@@ -75,11 +84,21 @@ var curY = 150;
 
 tessshape("F",two,curX,curY);
 
-for (var i = 0; i < 20; i++) {
-  xShift = (Math.floor(Math.random()*100)+Math.floor(Math.random()*-100))/2;
-  yShift = (Math.floor(Math.random()*100)+Math.floor(Math.random()*-100))/2;
-  curX += xShift;
-  curY += yShift;
-  tessshape("F",two,curX,curY);
-  
+for (var i = 0; i < 10; i++) {
+  pathForce = Math.floor(Math.random()*5)
+  coinFlip = Math.floor(Math.random()*2);
+  var xShift = 0;
+  var yShift = 0;
+  if (coinFlip >= 1) {
+    xShift = (Math.floor(Math.random()*100)+Math.floor(Math.random()*-100))/2;
+  }
+  else {
+    yShift = (Math.floor(Math.random()*100)+Math.floor(Math.random()*-100))/2;
+  }
+
+  for (var j = 0; j < pathForce; j++) {
+    curX += xShift;
+    curY += yShift;
+    tessshape("T",two,curX,curY);
+  }
 }
