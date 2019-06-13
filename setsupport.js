@@ -8,31 +8,50 @@ var two = new Two(params).appendTo(elem);
 //How can we use two.js's native bind method to run all this?
 //are bindings ran in order?
 
-var rect = two.makeRectangle(150,150,30,30);
-rect.fill = 'rgb(10, 10, 10)';
-two.update();
+var foreground = two.makeGroup();
 
-
-two.bind('render',renderfun).bind('pause',pausefun).play();
-
-function renderfun() {
-  if (rect.translation.y == 150) {
-    rect.translation.set(0,100);
+function genLines(two) {
+  const recWidth = 600;
+  const lSideAlign = 0;
+  var nextpos = 0;
+  var x = 0;
+  var y = 0;
+  var rect = "";
+  while(nextpos < 300) {
+      x = Math.floor(Math.random()*5);
+      y = Math.floor(Math.random()*13);
+      rect = two.makeRectangle(lSideAlign,nextpos,recWidth,x)
+      rect.fill = 'rgb(10, 10, 10)';
+      nextpos = nextpos + y + x;
   }
-  else if (rect.translation.y == 250) {
-    rect.translation.set(0,-100);
-  }
-  return undefined;
+  two.render();
+  return
 }
 
-function pausefun() {
-  setTimeout(dummy,1000);
+function genfrontscreen(two) {
+  var recfront = two.makeRectangle(150,150,250,250);
+  recfront.fill = "rgb(186, 241, 188)"
+  let origin_x = 50;
+  let origin_y = 50;
+
+
+  two.render();
 }
 
-function dummy() {
-  return undefined;
+function callrender() {
+  two.clear();
+  genLines(two);
+  genfrontscreen(two);
 }
 
-function updatefun() {
-  two.update();
+function sleep(delay) {
+    var start = new Date().getTime();
+    while (new Date().getTime() < start + delay);
+}
+
+var i = 0;
+for (i; i <= 5000; i++) {
+//  sleep(50);
+//  callrender();
+setInterval(callrender,1000);
 }
