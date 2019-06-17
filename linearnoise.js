@@ -30,7 +30,18 @@ function callgenLines() {
   genLines(two);
 }
 
-var i = 0;
-for (i; i < 5000; i++) {
-  setTimeout(callgenLines,50);
+function renderframes(n) {
+    if (n == 1000) {
+      return undefined;
+    }
+    genLines(two);
+    setTimeout(renderframes,500,(n+1));
+
 }
+
+renderframes(0);
+
+//var i = 0;
+//for (i; i < 5000; i++) {
+//  setTimeout(callgenLines,50);
+//}

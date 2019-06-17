@@ -1,7 +1,7 @@
 
 //Basic canvas initialization, and a reference to it.
 var elem = document.getElementById('canvas');
-var params = { width: 600, height: 300 };
+var params = { width: 600, height: 600 };
 var two = new Two(params).appendTo(elem);
 
 function posupdate(x,y) {
