@@ -9,15 +9,19 @@ var two = new Two({
         }).appendTo(document.body);
 
 
-var fps = 5; //Number between 1 and 60.
-var frameLimit = 100;
+var fps = 10; //Number between 1 and 60.
+var frameLimit = 1000;
 var n = 0;
 
 function renderrecurse(n) {
+  var newY = 120;
   if (n < frameLimit) {
     two.clear();
     genLines(two);
     genfrontscreen(two);
+    newY = gennoise(120,newY,"F");
+    newY = gennoise(120,newY+50,"T");
+    newY = gennoise(120,newY+150,"X");
     two.render();
     setTimeout(renderrecurse,Math.round(1000/fps),(n+1));
   }
@@ -64,15 +68,51 @@ function tessshape(character,two,x,y) {
     grouping = two.makeGroup(rect1,rect2);
     two.update();
   }
+  else if (character == "X") {
+    rect1 = two.makeRectangle(x,y,base,6*base);
+    rect1.fill = 'rgb(5, 5,  5)';
+    rect1.rotation = Math.PI/4;
+    rect2 = two.makeRectangle(x,y,base,6*base);
+    rect2.fill = 'rgb(5, 5, 5)';
+    rect2.rotation = -(Math.PI/2);
+    grouping = two.makeGroup(rect1,rect2);
+    two.update();
+  }
   return
 }
-
 
 function genfrontscreen(two) {
   var recfront = two.makeRectangle(300,300,500,500);
   recfront.fill = "rgb(186, 241, 188)"
   let curX = 150;
   let curY = 150;
+}
+
+function gennoise(startX,startY,shape) {
+  var curX = startX;
+  var curY = startY;
+  var boxLimX = 490;
+  //For each start point:
+  var numLines = Math.floor(Math.random()*8);
+
+  for (var i = 0; i <= numLines; i++) {
+    var shapeDist = Math.floor(Math.random()*10);
+    var numShapesLine = Math.floor(Math.random()*80);
+      for (var j = 0; j <= numShapesLine; j++) {
+        if (curX > boxLimX) {
+          break;
+        }
+        tessshape(shape,two, curX,curY);
+        curX += shapeDist;
+      }
+      curX = 120;
+      curY += 10;
+  }
+  return curY;
+}
+
+
+function pathwalk() {
 
   for (var i = 0; i < 10; i++) {
     pathForce = Math.floor(Math.random()*3)
